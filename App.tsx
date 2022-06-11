@@ -1,11 +1,20 @@
-import { StyledSafeAreaView, StyledText, StyledView } from './App.styled';
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+import { GRAPHQL_API } from '@env';
+import { RecoilRoot } from 'recoil';
 
-const App = () => (
-  <StyledSafeAreaView>
-    <StyledView>
-      <StyledText>Hello World!</StyledText>
-    </StyledView>
-  </StyledSafeAreaView>
-);
+import Screens from './screens/screens';
 
+const App = () => {
+  const client = new ApolloClient({
+    uri: GRAPHQL_API,
+    cache: new InMemoryCache(),
+  });
+  return (
+    <ApolloProvider client={client}>
+      <RecoilRoot>
+        <Screens />
+      </RecoilRoot>
+    </ApolloProvider>
+  );
+};
 export default App;
