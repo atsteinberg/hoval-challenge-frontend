@@ -1,18 +1,59 @@
-import { SafeAreaView, View, Text, TouchableOpacity } from 'react-native';
-import { useRecoilState } from 'recoil';
-import { userState } from '../../recoil/store';
+import {
+  NavigationContainer,
+  ParamListBase,
+  RouteProp,
+} from '@react-navigation/native';
+import {
+  createStackNavigator,
+  StackScreenProps,
+} from '@react-navigation/stack';
+import DeviceDetails from './device-details/device-details';
+import home from './home';
+
+type RootStackParamsList = {
+  Home: undefined;
+  Details: { id: string; name: string };
+};
+
+export type ScreenProps = StackScreenProps<RootStackParamsList>;
+
+// TODO improve typing
+const getDynamicTitle = ({
+  route,
+}: {
+  route: RouteProp<ParamListBase, 'Details'>;
+}) => {
+  const { params } = route;
+  if (!params || !('name' in params)) {
+    return { title: 'Details' };
+  }
+  return { title: (params as { name: string }).name };
+};
 
 const AuthenticatedApp = () => {
-  const [user, setUser] = useRecoilState(userState);
-  const handlePress = () => setUser(null);
+  const Stack = createStackNavigator();
+
   return (
-    <SafeAreaView>
-      <View>
-        <TouchableOpacity onPress={handlePress}>
-          <Text>Hello {user?.userName}</Text>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+    <NavigationContainer>
+      <Stack.Navigator
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: 'red',
+          },
+          headerTintColor: 'white',
+          headerTitleStyle: {
+            fontFamily: 'LatoBold',
+          },
+        }}
+      >
+        <Stack.Screen name="Home" component={home} />
+        <Stack.Screen
+          name="Details"
+          component={DeviceDetails}
+          options={getDynamicTitle}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 
