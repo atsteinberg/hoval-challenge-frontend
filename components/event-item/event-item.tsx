@@ -10,7 +10,7 @@ export type EventItemProps = {
   dateString: string;
   message?: string;
   status: ErrorStatus | null;
-  type: 'DeviceError' | 'UserInteraction' | 'DeviceStatusChange';
+  type: 'DeviceError' | 'UserInteraction' | 'StatusChange';
   navigate: (
     to: 'EventDetails',
     params: Omit<EventItemProps, 'navigate'>,

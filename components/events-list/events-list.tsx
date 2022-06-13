@@ -42,12 +42,13 @@ const getInteractionShortMessage = (type: UserInteractionType) => {
 const transformToEventItemProps = (
   item: UserInteraction | DeviceError | DeviceStatusChange,
 ): Omit<EventItemProps, 'navigate'> => {
+  console.log({ item });
   const message =
     item.__typename === 'DeviceError' || item.__typename === 'UserInteraction'
       ? item.message
       : '';
   const shortMessage =
-    item.__typename === 'DeviceStatusChange'
+    item.__typename === 'StatusChange'
       ? item.event
       : item.__typename === 'DeviceError'
       ? item.errorType
