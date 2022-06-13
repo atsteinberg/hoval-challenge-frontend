@@ -25,7 +25,6 @@ const useGetSmartHomeDevices = () => {
       accessToken,
     },
   });
-  console.log({ data });
   return {
     loading,
     devices: data?.getSmartHomeDevices.map(

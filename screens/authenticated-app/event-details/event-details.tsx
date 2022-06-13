@@ -13,7 +13,6 @@ export type EventDetailsProps = StackScreenProps<
 const EventDetails: FC<EventDetailsProps> = ({ route: { params } }) => {
   const { shortMessage, message } = params;
   const { onPress, buttonDisabled, shouldShowButton } = useEventDetails(params);
-  console.log({ shortMessage, message });
   return (
     <Wrapper>
       <TextWrapper>

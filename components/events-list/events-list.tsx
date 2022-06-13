@@ -24,7 +24,6 @@ const sortByDate = (
 ) => {
   const aDate = new Date(a instanceof DeviceError ? a.createdAt : a.date);
   const bDate = new Date(b instanceof DeviceError ? b.createdAt : b.date);
-  console.log('bDate', bDate.getDate());
   return bDate.getTime() - aDate.getTime();
 };
 
@@ -42,7 +41,6 @@ const getInteractionShortMessage = (type: UserInteractionType) => {
 const transformToEventItemProps = (
   item: UserInteraction | DeviceError | DeviceStatusChange,
 ): Omit<EventItemProps, 'navigate'> => {
-  console.log({ item });
   const message =
     item.__typename === 'DeviceError' || item.__typename === 'UserInteraction'
       ? item.message
@@ -58,7 +56,6 @@ const transformToEventItemProps = (
     ? format(new Date(date), 'do Mo, HH:mm', { locale: de })
     : '';
   const status = item.__typename === 'DeviceError' ? item.status : null;
-  console.log({ status });
   return {
     message,
     shortMessage,
