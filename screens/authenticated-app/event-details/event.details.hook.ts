@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { ErrorStatus } from '../../../classes/enums';
 import useUpdateError from '../../../services/graphql/mutations/use-update-error';
 import { EventItemProps } from '../../../components/event-item/event-item';
 
-const useEventDetails = (params: Omit<EventItemProps, 'navigate'>) => {
+const useEventDetails = (
+  params: Omit<EventItemProps, 'navigate'>,
+  goBack: () => void,
+) => {
   const { updateError } = useUpdateError();
   const { id, type, status } = params;
-  const [buttonDisabled, setButtonDisabled] = useState(
-    status === ErrorStatus.Acknowledged,
-  );
   useEffect(() => {
     if (type === 'DeviceError' && status === ErrorStatus.Unread) {
       updateError({
@@ -22,17 +22,21 @@ const useEventDetails = (params: Omit<EventItemProps, 'navigate'>) => {
     }
   }, [id, status, type, updateError]);
 
-  const onPress =
+  const acknowledge =
     type === 'DeviceError'
       ? () => {
           updateError({
             variables: { input: { id, status: ErrorStatus.Acknowledged } },
           });
-          setButtonDisabled(true);
+          goBack();
         }
       : undefined;
 
-  return { onPress, buttonDisabled, shouldShowButton: type === 'DeviceError' };
+  return {
+    acknowledge,
+    buttonDisabled: status === ErrorStatus.Acknowledged,
+    shouldShowButton: type === 'DeviceError',
+  };
 };
 
 export default useEventDetails;

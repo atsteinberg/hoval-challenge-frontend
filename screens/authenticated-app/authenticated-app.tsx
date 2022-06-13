@@ -42,6 +42,7 @@ const AuthenticatedApp = () => {
           headerTitleStyle: {
             fontFamily: 'LatoBold',
           },
+          headerBackTitle: 'zurück',
         }}
       >
         <RootStack.Group>

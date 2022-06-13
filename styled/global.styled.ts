@@ -37,4 +37,5 @@ export const LatoButton = styled(Button)`
 export const CenteredView = styled(View)`
   align-items: center;
   justify-content: center;
+  flex: 1;
 `;

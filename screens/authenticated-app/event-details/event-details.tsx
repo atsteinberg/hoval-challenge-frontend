@@ -10,9 +10,15 @@ export type EventDetailsProps = StackScreenProps<
   'EventDetails'
 >;
 
-const EventDetails: FC<EventDetailsProps> = ({ route: { params } }) => {
+const EventDetails: FC<EventDetailsProps> = ({
+  route: { params },
+  navigation: { goBack },
+}) => {
   const { shortMessage, message } = params;
-  const { onPress, buttonDisabled, shouldShowButton } = useEventDetails(params);
+  const { acknowledge, buttonDisabled, shouldShowButton } = useEventDetails(
+    params,
+    goBack,
+  );
   return (
     <Wrapper>
       <TextWrapper>
@@ -21,7 +27,7 @@ const EventDetails: FC<EventDetailsProps> = ({ route: { params } }) => {
       </TextWrapper>
       {shouldShowButton && (
         <LatoButton
-          onPress={onPress}
+          onPress={acknowledge}
           title="Quittieren"
           disabled={buttonDisabled}
         />
