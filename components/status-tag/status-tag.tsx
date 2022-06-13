@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { ErrorStatus } from '../../classes/device-error.class';
+import { ErrorStatus } from '../../classes/enums';
 import { Label, Tag } from './status-tag.styled';
 
 type StatusTagProps = {
@@ -8,11 +8,11 @@ type StatusTagProps = {
 
 const getTagLabel = (status: ErrorStatus) => {
   switch (status) {
-    case ErrorStatus.Active:
+    case ErrorStatus.Unread:
       return 'ungelesen';
-    case ErrorStatus.Checked:
+    case ErrorStatus.Read:
       return 'gelesen';
-    case ErrorStatus.Resolved:
+    case ErrorStatus.Acknowledged:
       return 'quittiert';
   }
 };
@@ -21,7 +21,7 @@ const StatusTag: FC<StatusTagProps> = ({ status }) => {
   if (!status) {
     return null;
   }
-  const color = status === ErrorStatus.Active ? 'red' : 'lightgray';
+  const color = status !== ErrorStatus.Acknowledged ? 'red' : 'lightgray';
   return (
     <Tag $color={color}>
       <Label>{getTagLabel(status)}</Label>

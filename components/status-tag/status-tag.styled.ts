@@ -5,9 +5,6 @@ import { LatoText } from '../../styled/global.styled';
 export const Tag = styled(View)<{ $color: string }>`
   color: white;
   padding: 2px 10px;
-  position: absolute;
-  top: 5px;
-  left: 20px;
   border-radius: 10px;
   ${({ $color }) => `background-color: ${$color};`}
 `;

@@ -6,13 +6,16 @@ export const Wrapper = styled(View)`
   position: relative;
   background-color: #eee;
   border-radius: 5px;
-  padding: 30px 20px 20px 20px;
+  padding: 5px 20px 20px 20px;
 `;
 
-export const Date = styled(LatoLightText)`
-  position: absolute;
-  right: 5px;
-  top: 5px;
-`;
+export const Date = styled(LatoLightText)``;
 
 export const Message = styled(LatoText)``;
+
+export const Header = styled(View)`
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+`;

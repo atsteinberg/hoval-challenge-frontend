@@ -1,7 +1,4 @@
-export enum UserInteractionType {
-  NameChange = 'NameChange',
-  TargetTemperatureChange = 'TargetTemperatureChange',
-}
+import { UserInteractionType } from './enums';
 
 export class UserInteraction {
   __typename: 'UserInteraction';

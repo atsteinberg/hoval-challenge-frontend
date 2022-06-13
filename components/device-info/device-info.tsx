@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { SmartHomeDeviceType } from '../../classes/smart-home-device.class';
+import { SmartHomeDeviceType } from '../../classes/enums';
 import { Title, Type, Wrapper } from './device-info.styled';
 
 type DeviceInfoProps = {

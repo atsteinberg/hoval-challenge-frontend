@@ -4,6 +4,7 @@ import { FC } from 'react';
 import { FlatList } from 'react-native';
 import { DeviceError } from '../../classes/device-error.class';
 import { DeviceStatusChange } from '../../classes/device-status-change.class';
+import { UserInteractionType } from '../../classes/enums';
 import { UserInteraction } from '../../classes/user-interaction.class';
 import EventItem from '../event-item';
 import { EventItemProps } from '../event-item/event-item';
@@ -11,6 +12,10 @@ import { Separator } from './events-list.styled';
 
 type EventsListProps = {
   events: (UserInteraction | DeviceError | DeviceStatusChange)[];
+  navigate: (
+    to: 'EventDetails',
+    params: Omit<EventItemProps, 'navigate'>,
+  ) => void;
 };
 
 const sortByDate = (
@@ -23,39 +28,53 @@ const sortByDate = (
   return bDate.getTime() - aDate.getTime();
 };
 
+const getInteractionShortMessage = (type: UserInteractionType) => {
+  switch (type) {
+    case UserInteractionType.NameChange:
+      return 'Namensänderung';
+    case UserInteractionType.TargetTemperatureChange:
+      return 'Solltemperaturänderung';
+    default:
+      return 'Benutzerinteraktion';
+  }
+};
+
 const transformToEventItemProps = (
   item: UserInteraction | DeviceError | DeviceStatusChange,
-): EventItemProps => {
+): Omit<EventItemProps, 'navigate'> => {
   const message =
-    item.__typename === 'DeviceStatusChange' ? item.event : item.message;
-  const fullMessage =
-    item.__typename === 'DeviceError'
-      ? `${item.errorType}: ${message}`
-      : message;
+    item.__typename === 'DeviceError' || item.__typename === 'UserInteraction'
+      ? item.message
+      : '';
+  const shortMessage =
+    item.__typename === 'DeviceStatusChange'
+      ? item.event
+      : item.__typename === 'DeviceError'
+      ? item.errorType
+      : getInteractionShortMessage(item.interactionType);
   const date = item.__typename === 'DeviceError' ? item.createdAt : item.date;
   const dateString = date
     ? format(new Date(date), 'do Mo, HH:mm', { locale: de })
     : '';
   const status = item.__typename === 'DeviceError' ? item.status : null;
   console.log({ status });
-  const acknowledge = status
-    ? () => console.log(`acknowledge ${item.id}`)
-    : undefined;
   return {
-    message: fullMessage,
+    message,
+    shortMessage,
     dateString,
     status,
-    acknowledge,
+    id: item.id,
+    type: item.__typename,
   };
 };
 
-const EventsList: FC<EventsListProps> = ({ events }) => {
+const EventsList: FC<EventsListProps> = ({ events, navigate }) => {
   events.sort(sortByDate);
   return (
     <FlatList
       data={events}
       renderItem={({ item }) => (
-        <EventItem {...transformToEventItemProps(item)} />
+        <EventItem {...transformToEventItemProps(item)} navigate={navigate} />
       )}
       keyExtractor={(item) => item.id}
       ItemSeparatorComponent={Separator}

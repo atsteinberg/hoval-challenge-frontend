@@ -4,7 +4,7 @@ import { SmartHomeDevice } from '../../../classes/smart-home-device.class';
 import { userState } from '../../../recoil/store';
 import deviceErrorFragment from '../fragments/device-error.fragment';
 
-const GET_SMART_HOME_DEVICES = gql`
+export const GET_SMART_HOME_DEVICES = gql`
   query GetSmartHomeDevices {
     getSmartHomeDevices {
       id

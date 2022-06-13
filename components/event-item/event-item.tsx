@@ -1,28 +1,50 @@
 import { FC } from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { ErrorStatus } from '../../classes/device-error.class';
+import { ErrorStatus } from '../../classes/enums';
 import StatusTag from '../status-tag';
-import { Date, Message, Wrapper } from './event-item.styled';
+import { Date, Header, Message, Wrapper } from './event-item.styled';
 
 export type EventItemProps = {
-  message: string;
+  id: string;
+  shortMessage: string;
   dateString: string;
-  acknowledge?: () => void;
+  message?: string;
   status: ErrorStatus | null;
+  type: 'DeviceError' | 'UserInteraction' | 'DeviceStatusChange';
+  navigate: (
+    to: 'EventDetails',
+    params: Omit<EventItemProps, 'navigate'>,
+  ) => void;
 };
 
 const EventItem: FC<EventItemProps> = ({
-  message,
+  id,
+  shortMessage,
   dateString,
-  acknowledge,
   status,
+  type,
+  message,
+  navigate,
 }) => {
   return (
-    <TouchableOpacity onPress={acknowledge}>
+    <TouchableOpacity
+      onPress={() =>
+        navigate('EventDetails', {
+          id,
+          status,
+          shortMessage,
+          dateString,
+          type,
+          message,
+        })
+      }
+    >
       <Wrapper>
-        <Date>{dateString}</Date>
-        <Message>{message}</Message>
-        <StatusTag status={status} />
+        <Header>
+          <Date>{dateString}</Date>
+          <StatusTag status={status} />
+        </Header>
+        <Message>{shortMessage}</Message>
       </Wrapper>
     </TouchableOpacity>
   );

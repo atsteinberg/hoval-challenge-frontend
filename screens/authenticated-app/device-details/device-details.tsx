@@ -1,13 +1,19 @@
 import { FC } from 'react';
 import Loading from '../../../components/loading';
 import useGetSmartHomeDevice from '../../../services/graphql/queries/use-get-smart-home-device';
-import { ScreenProps } from '../authenticated-app';
+import { RootStackParamsList } from '../authenticated-app';
 import Temperatures from '../../../components/temperatures';
 import DeviceInfo from '../../../components/device-info/device-info';
 import { Wrapper } from './device-details.styled';
 import EventsList from '../../../components/events-list';
+import { StackScreenProps } from '@react-navigation/stack';
 
-const DeviceDetails: FC<ScreenProps> = ({ route: { params } }) => {
+type DeviceDetailsProps = StackScreenProps<RootStackParamsList, 'EventDetails'>;
+
+const DeviceDetails: FC<DeviceDetailsProps> = ({
+  route: { params },
+  navigation,
+}) => {
   const { device, loading } = useGetSmartHomeDevice(params?.id);
   if (loading) {
     return <Loading />;
@@ -29,6 +35,7 @@ const DeviceDetails: FC<ScreenProps> = ({ route: { params } }) => {
           ...(device.statusChanges ?? []),
           ...(device.userInteractions ?? []),
         ]}
+        navigate={navigation.navigate}
       />
     </Wrapper>
   );

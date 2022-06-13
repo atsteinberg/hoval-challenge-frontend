@@ -1,14 +1,10 @@
-import { DeviceError, ErrorStatus } from './device-error.class';
+import { DeviceError } from './device-error.class';
 import { DeviceStatusChange } from './device-status-change.class';
+import { ErrorStatus, SmartHomeDeviceType } from './enums';
 import { UserInteraction } from './user-interaction.class';
 
-export enum SmartHomeDeviceType {
-  HeatingCircuit = 'HeatingCircuit',
-  CoolingCircuit = 'CoolingCircuit',
-}
-
 const isActiveError = (error: DeviceError) =>
-  error.status === ErrorStatus.Active;
+  error.status !== ErrorStatus.Acknowledged;
 
 export class SmartHomeDevice {
   constructor(input: Partial<SmartHomeDevice>) {

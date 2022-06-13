@@ -2,7 +2,7 @@ import { faFire, faSnowflake } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { FC } from 'react';
 import { TouchableOpacity } from 'react-native';
-import { SmartHomeDeviceType } from '../../classes/smart-home-device.class';
+import { SmartHomeDeviceType } from '../../classes/enums';
 import { ItemWrapper, Label } from './device-item.styled';
 
 type DeviceItemProps = {

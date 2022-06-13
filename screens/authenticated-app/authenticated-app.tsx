@@ -3,22 +3,20 @@ import {
   ParamListBase,
   RouteProp,
 } from '@react-navigation/native';
-import {
-  createStackNavigator,
-  StackScreenProps,
-} from '@react-navigation/stack';
-import DeviceDetails from './device-details/device-details';
+import { createStackNavigator } from '@react-navigation/stack';
+import { EventItemProps } from '../../components/event-item/event-item';
+import DeviceDetails from './device-details';
+import EventDetails from './event-details';
 import home from './home';
 
-type RootStackParamsList = {
+export type RootStackParamsList = {
   Home: undefined;
   Details: { id: string; name: string };
+  EventDetails: Omit<EventItemProps, 'navigate'>;
 };
 
-export type ScreenProps = StackScreenProps<RootStackParamsList>;
-
 // TODO improve typing
-const getDynamicTitle = ({
+const getDynamicDetailsTitle = ({
   route,
 }: {
   route: RouteProp<ParamListBase, 'Details'>;
@@ -31,11 +29,11 @@ const getDynamicTitle = ({
 };
 
 const AuthenticatedApp = () => {
-  const Stack = createStackNavigator();
+  const RootStack = createStackNavigator();
 
   return (
     <NavigationContainer>
-      <Stack.Navigator
+      <RootStack.Navigator
         screenOptions={{
           headerStyle: {
             backgroundColor: 'red',
@@ -46,13 +44,22 @@ const AuthenticatedApp = () => {
           },
         }}
       >
-        <Stack.Screen name="Home" component={home} />
-        <Stack.Screen
-          name="Details"
-          component={DeviceDetails}
-          options={getDynamicTitle}
-        />
-      </Stack.Navigator>
+        <RootStack.Group>
+          <RootStack.Screen name="Home" component={home} />
+          <RootStack.Screen
+            name="Details"
+            component={DeviceDetails}
+            options={getDynamicDetailsTitle}
+          />
+        </RootStack.Group>
+        <RootStack.Group screenOptions={{ presentation: 'modal' }}>
+          <RootStack.Screen
+            name="EventDetails"
+            component={EventDetails}
+            options={{ title: 'Event Details' }}
+          />
+        </RootStack.Group>
+      </RootStack.Navigator>
     </NavigationContainer>
   );
 };
